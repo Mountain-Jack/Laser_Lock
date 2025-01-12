@@ -1,0 +1,9 @@
+# Ignore cache files
+
+__pycache__/
+on_board\__pycache__/
+server\__pycache__/
+# Ignore Personal Info
+
+Keys.txt
+

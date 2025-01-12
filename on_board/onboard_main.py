@@ -24,7 +24,7 @@ setup_redpitaya(rp_s, trigger_level, decimation)
 try:
     # Set up socket communication
     import socket
-    SERVER_IP = '169.254.166.5'  # Replace with your server's IP (User Ethernet Adapter, and not Ethernet 4)
+    SERVER_IP = ''  # Replace with your server's IP (User Ethernet Adapter, and not Ethernet 4)
     SERVER_PORT = 65432
 
 
