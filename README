@@ -1,0 +1,68 @@
+## Project Structure
+    Program is split into on_board and server files
+### Server Files
+- **server.py**
+  - Sets up and runs the main server loop
+  - Retrieves data from the Red Pitaya
+  - Contains visualization functions (`initialize_plot` and `update_plot`) for real-time data and peak detection display
+
+### On-board Files
+- **onboard_main.py**
+  - Runs the main loop
+  - Handles data transmission to the server
+
+- **scpi_interface.py**
+  - Controls Red Pitaya hardware through functions:
+    - `setup_redpitaya`
+    - `acquire_data`
+    - `output_feedback_voltage`
+
+- **calculations.py**
+  - Performs parameter calculations through functions:
+    - `detect_peaks`
+    - `calculate_sample_differences`
+    - `calculate_error_correction`
+
+### Alternative Implementation
+- **main.py**
+  - Standalone alternative to server.py
+  - Controls Red Pitaya and performs calculations remotely
+  - No file installation required on Red Pitaya
+
+## Setup Instructions
+
+### Red Pitaya Configuration
+1. Ensure Red Pitaya's SCPI server is running
+2. Before executing new files on Red Pitaya, run:
+   ```bash
+   chmod +x filename            # Make file executable
+   sed -i 's/\r$//' filename   # Fix line endings
+   ```
+
+### Network Configuration
+- `SERVER_PORT` in server.py and onboard_main.py works with most computers
+  - Any TCP-capable port is acceptable
+- `SERVER_IP` in onboard_main.py must be configured per server
+  - Use IP address from 'Ethernet adapter Ethernet:' (not 'Ethernet adapter Ethernet 4:')
+  - Obtain IP using `ipconfig` command in windows
+
+## Buffer Configuration
+
+### Dependent Parameters
+When modifying buffer size, adjust these parameters:
+- `data_size`
+- `sample_threshold`
+- `target_sample_diff`
+- Function generator frequency
+
+### Decimation Frequencies
+Function generator period should be double the buffer fill time. Recommended frequencies:
+- Decimation 8: 476.64 Hz
+- Decimation 64: 59.60 Hz
+- Decimation 1024: 3.73 Hz
+
+## Future Improvements
+1. Implement automatic variable adjustment based on decimation
+2. Optimize data transmission frequency
+3. Enhance peak detection robustness
+4. Add runtime parameter modification to onboard_main.py
