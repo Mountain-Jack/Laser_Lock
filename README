@@ -1,5 +1,7 @@
 ## Project Structure
     Program is split into on_board and server files
+    Server functionalty is optional in the conf.json file
+    
 ### Server Files
 - **server.py**
   - Sets up and runs the main server loop
@@ -60,6 +62,10 @@ Function generator period should be double the buffer fill time. Recommended fre
 - Decimation 8: 476.64 Hz
 - Decimation 64: 59.60 Hz
 - Decimation 1024: 3.73 Hz
+# Hardware Setup
+- Input 1 should be scanning the stabelized laser
+- Input 2 should be scanning the laser to be stabelized
+- Output 1 provided the feedback voltage
 
 ## Future Improvements
 1. Implement automatic variable adjustment based on decimation

@@ -1,0 +1,12 @@
+{
+    "IP": "127.0.0.1",
+    "trigger_level": 0,
+    "decimation": 8,
+    "target_sample_diff": 2000,
+    "gain": 0.5,
+    "feedback": 0,
+    "rest_time": 0.5,
+    "use_server": true,
+    "server_ip": "",
+    "server_port": 65432
+}
