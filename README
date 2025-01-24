@@ -65,6 +65,7 @@ Function generator period should be double the buffer fill time. Recommended fre
 # Hardware Setup
 - Input 1 should be scanning the stabelized laser
 - Input 2 should be scanning the laser to be stabelized
+- Input DIO0_EXT is connected to the external trigger for the triangle wave
 - Output 1 provided the feedback voltage
 
 ## Future Improvements
