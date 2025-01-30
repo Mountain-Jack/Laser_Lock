@@ -2,7 +2,7 @@ import numpy as np
 from scipy.signal import find_peaks
 from scipy.ndimage import label
 
-def detect_peaks(data, height=0.3, sample_threshold=1000):
+def detect_peaks(data, height=0.1, sample_threshold=1000):
     peaks, _ = find_peaks(data, height=height)
     if len(peaks) > 2:
         time_diffs = np.diff(peaks)

@@ -38,7 +38,6 @@
 2. Before executing new files on Red Pitaya, run:
    ```bash
    chmod +x filename            # Make file executable
-   sed -i 's/\r$//' filename   # Fix line endings
    ```
 
 ### Network Configuration
