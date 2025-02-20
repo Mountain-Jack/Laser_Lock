@@ -72,3 +72,6 @@ Function generator period should be double the buffer fill time. Recommended fre
 2. Optimize data transmission frequency
 3. Enhance peak detection robustness
 4. Add runtime parameter modification to onboard_main.py
+
+## USE THIS COMMAND TO COPY FILES
+scp -r ./on_board root@rp-f0ad99.local:/root/

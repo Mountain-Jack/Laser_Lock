@@ -3,7 +3,7 @@ import time
 
 # Setup Import
 import sys
-import redpitaya_scpi as scpi
+import on_board.redpitaya_scpi as scpi
 import matplotlib.pyplot as plot
 import matplotlib.animation as animation
 import numpy as np

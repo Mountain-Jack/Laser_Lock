@@ -2,11 +2,12 @@
     "IP": "127.0.0.1",
     "trigger_level": 1.5,
     "decimation": 64,
+    "data_slice": 2, 
     "target_sample_diff": 600,
     "gain": 0.5,
     "feedback": 0,
-    "use_server": true,
+    "use_server": false,
     "server_send_rate": 5,
-    "server_ip": "",
+    "server_ip": "169.254.199.214",
     "server_port": 65432
 }

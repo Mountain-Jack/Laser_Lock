@@ -1,7 +1,6 @@
 import time
-import sys
 import numpy as np
-
+import sys
 # Set up data aquisition 
 def setup_redpitaya(rp_s, trigger_level, decimation, timeout=5):
     """Set up the Red Pitaya with a timeout."""
@@ -31,7 +30,7 @@ def setup_redpitaya(rp_s, trigger_level, decimation, timeout=5):
         print(f"Setup Failed: {e}")
         raise
     
-def acquire_data(rp_s, retries=10, delay=5):
+def acquire_data(rp_s, data_slice, retries=10, delay=5):
     """Acquire data from both input channels with retry logic."""
     for attempt in range(retries):
         try:
@@ -57,14 +56,18 @@ def acquire_data(rp_s, retries=10, delay=5):
             # Acquire data from both channels
             rp_s.tx_txt('ACQ:SOUR1:DATA?')
             buff_string1 = rp_s.rx_txt()
+            # Prepare data for NumPy Array
             buff_string1 = buff_string1.strip('{}\n\r').replace("  ", "").split(',')
+            # Slice data
+            buff_string1 = buff_string1[::data_slice]
             data1 = np.array(list(map(float, buff_string1)))
 
             rp_s.tx_txt('ACQ:SOUR2:DATA?')
             buff_string2 = rp_s.rx_txt()
             buff_string2 = buff_string2.strip('{}\n\r').replace("  ", "").split(',')
+            buff_string2 = buff_string2[::data_slice]
             data2 = np.array(list(map(float, buff_string2)))
-
+            
             return data1, data2
 
         except TimeoutError as e:
@@ -86,7 +89,6 @@ def output_feedback_voltage(rp_s, feedback):
         voltage = f"{voltage:.3f}"
         # Send the command to set the output voltage
         rp_s.tx_txt(f'SOUR1:VOLT:OFFS {voltage}')
-        print(f"Feedback voltage set to: {voltage} V")
         return voltage
     except Exception as e:
         print(f"Failed to set output voltage: {e}")

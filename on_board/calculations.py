@@ -2,15 +2,22 @@ import numpy as np
 from scipy.signal import find_peaks
 from scipy.ndimage import label
 
-def detect_peaks(data, height=0.1, sample_threshold=1000):
-    peaks, _ = find_peaks(data, height=height)
+def detect_peaks(data, height, sample_threshold):
+    peaks, _ = find_peaks(data, height)
+ 
     if len(peaks) > 2:
+        # Calculate time differences between consecutive peaks
         time_diffs = np.diff(peaks)
+
+        # Identify clusters based on sample_threshold
         clusters = time_diffs > sample_threshold
+        
+        # Use cumsum to identify unique clusters
         cluster_indices = np.concatenate(([0], np.cumsum(clusters)))
+        # Calculate mean of peaks within each cluster
         unique_clusters = np.unique(cluster_indices)
         peaks = np.array([np.mean(peaks[cluster_indices == cluster]).astype(int) for cluster in unique_clusters])
-    else:
+    elif len(peaks) == 0:
         peaks = np.array([], dtype=int)  # Ensure an empty integer array is returned if no peaks are detected
     return peaks
 
@@ -18,7 +25,7 @@ def calculate_sample_differences(t_ref, t_s):
     # Note: t_ref is the refrence laser, and t_s is the laser to be stabalized
     if len(t_ref) < 1 or len(t_s) < 1:
         print('Error: One or both peak(s) not detected')
-        return 0  # Not enough peaks detected in one or both datasets
+        return None  # Not enough peaks detected in one or both datasets
     
     # Calculate the difference between the first peak of each dataset
     # Ensure that sample difference is the difference between the first t_ref peak to the next t_s peak
