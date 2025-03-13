@@ -32,7 +32,12 @@ class DeviceManager:
         self.input_thread = threading.Thread(target=self.handle_user_input)
         self.input_thread.daemon = True
         self.input_thread.start()
-    
+        
+        # Start a thread for locking loop
+        self.locking_thread = threading.Thread(target=self.main_loop_with_server if self.use_server else self.main_loop_no_server)
+        self.locking_thread.daemon = True
+        self.locking_thread.start()
+
     # Main Locking Method
     def laser_lock(self, send_data):
         tic = time.perf_counter()
@@ -59,7 +64,6 @@ class DeviceManager:
 
         # Calculate Error Correction
         self.feedback = calculate_error_correction(sample_differences, self.target_sample_diff, self.gain, self.feedback)
-        print(self.target_sample_diff)
         # Output the feedback voltage
         voltage = output_feedback_voltage(self.rp_s, self.feedback)
 
@@ -105,8 +109,6 @@ class DeviceManager:
                 else:
                     self.laser_lock(False)
                     self.send_counter -= 1
-                if self.use_server:
-                    break
         except KeyboardInterrupt:
             print("Scanning stopped by user.")
             sys.exit(0)
@@ -214,11 +216,9 @@ class DeviceManager:
                 else:
                     print(f"Unknown parameter: {param}")
             elif len(command_parts) == 1 and command_parts[0] == "help":
-                    print("\nAvailable commands:\n- Update parameters (e.g., 'update trigger_level 5')\n- Stop Program : 'stop'\n\nList of variables that can be changed: target, decimation, gain, feedback, server_port, server_send_rate\n")
-            elif len(command_parts) == 1 and command_parts[0] == "help":
-                    print("\nAvailable commands:\n- Update parameters (e.g., 'update trigger_level 5')\n- Stop Program : 'stop'\n\nList of variables that can be changed: target, decimation, gain, feedback, server_port, server_send_rate\n")
+                print("\nAvailable commands:\n- Update parameters (e.g., 'update trigger_level 5')\n- Stop Program : 'stop'\n\nList of variables that can be changed: target, decimation, gain, feedback, server_port, server_send_rate\n")
             elif len(command_parts) == 1 and command_parts[0] == "stop":
-                    self.run = False
-                    break
+                self.run = False
+                break
             else:
                 print("Invalid command. Use 'update <param> <value>' or 'get <param>'.")

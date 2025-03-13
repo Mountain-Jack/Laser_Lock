@@ -28,10 +28,10 @@ def receive_data_from_onboard(conn):
     message = json.loads(data.decode('utf-8'))
     return message
 
-SERVER_IP = '0.0.0.0'  # Listen on all interfaces
+SERVER_IP = '169.254.166.5'  # Listen on all interfaces
 SERVER_PORT = 65432
-
-data_size = 16384   #Set up data size (depends on decimation)
+data_slice = 2 # Set up data slice
+data_size = 16384 // data_slice   #Set up data size (depends on data slice)
 target_sample_diff = 1200
 try:
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

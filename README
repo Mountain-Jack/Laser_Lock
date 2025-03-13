@@ -67,11 +67,6 @@ Function generator period should be double the buffer fill time. Recommended fre
 - Input DIO0_EXT is connected to the external trigger for the triangle wave
 - Output 1 provided the feedback voltage
 
-## Future Improvements
-1. Implement automatic variable adjustment based on decimation
-2. Optimize data transmission frequency
-3. Enhance peak detection robustness
-4. Add runtime parameter modification to onboard_main.py
-
 ## USE THIS COMMAND TO COPY FILES
+Run python: 
 scp -r ./on_board root@rp-f0ad99.local:/root/

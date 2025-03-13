@@ -2,23 +2,21 @@
 from scpi_interface import setup_redpitaya
 from DeviceManager import DeviceManager
 import sys
+import time
 def main():
     # Create an instance of the DeviceManager class
     dev_man = DeviceManager()
     setup_redpitaya(dev_man.rp_s, dev_man.trigger_level, dev_man.decimation)
     # Setup Red Pitaya
     print("Red Pitaya is set up")
-    run = True
 
-    while run:
-        # Run Main Loop
-        if dev_man.use_server:
-            dev_man.main_loop_with_server()
-        else: 
-            dev_man.main_loop_no_server()
-        run = dev_man.run
-
-    print("Stopping Program")
+    try:
+        # Keep the main thread alive while the DeviceManager threads are running
+        while dev_man.run:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Stopping Program")
+        dev_man.run = False
 
 if __name__ == "__main__":
     try:

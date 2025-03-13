@@ -6,8 +6,8 @@
     "target_sample_diff": 600,
     "gain": 0.5,
     "feedback": 0,
-    "use_server": false,
+    "use_server": true,
     "server_send_rate": 5,
-    "server_ip": "169.254.199.214",
+    "server_ip": "169.254.166.5",
     "server_port": 65432
 }

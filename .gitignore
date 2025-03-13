@@ -3,6 +3,9 @@
 __pycache__/
 on_board\__pycache__/
 server\__pycache__/
+__tests__/
+__.vscode/__/
+__.qodos__/
 # Ignore Personal Info
 
 Keys.txt

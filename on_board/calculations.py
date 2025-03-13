@@ -22,25 +22,23 @@ def detect_peaks(data, height, sample_threshold):
     return peaks
 
 def calculate_sample_differences(t_ref, t_s):
-    # Note: t_ref is the refrence laser, and t_s is the laser to be stabalized
+    # Note: t_ref is the reference laser, and t_s is the laser to be stabilized
     if len(t_ref) < 1 or len(t_s) < 1:
         print('Error: One or both peak(s) not detected')
         return None  # Not enough peaks detected in one or both datasets
     
-    # Calculate the difference between the first peak of each dataset
-    # Ensure that sample difference is the difference between the first t_ref peak to the next t_s peak
-    if t_ref[0] > t_s[0]:
-        try: 
-            sampling_difference = t_s[1] - t_ref[0]
-        except IndexError: 
-            print("Second t_s peak not detected")
-            return None
-    else: 
-        sampling_difference = t_s[0] - t_ref[0]
+    # Find the closest peak to the reference peak
+    closest_peak = t_s[0]
+    for peak in t_s:    
+        diff = peak - t_ref[0] 
+        if abs(diff) < abs(closest_peak - t_ref[0]):
+            closest_peak = peak
+    # Return sample difference between the two peaks
+    sampling_difference = closest_peak - t_ref[0]
     return sampling_difference
 
 def calculate_error_correction(sample_differences, target_sample_diff, gain, feedback):
-    if(sample_differences == 0):    # If only one peak is detected, feedback will not change
+    if sample_differences == 0:  # If only one peak is detected, feedback will not change
         return feedback
     try:
         # Calculate the error based on the difference in peaks and the target sample difference
@@ -51,4 +49,5 @@ def calculate_error_correction(sample_differences, target_sample_diff, gain, fee
         clamped_feedback = np.clip(new_feedback, -1000, 1000)
     except TypeError:
         print("Error in calculating error correction. Setting sampling difference to 0.")
+        clamped_feedback = feedback  # Return the current feedback if an error occurs
     return clamped_feedback
